@@ -221,8 +221,6 @@ Julia.Exit(0);
 
 ## 🛠 Upcoming Roadmap (TODO)
 
-While **JuliaDotNet** is already functional for high-performance interop, the following features are planned for future releases:
-
 ### 1. Reverse Initialization (Julia ➔ .NET)
 * [ ] **Standalone Julia Entry**: Currently, the bridge is primary-managed by C#. Working on a mechanism to launch the .NET runtime directly from a Julia session (`using JuliaDotNet`) without an existing C# host process.
 

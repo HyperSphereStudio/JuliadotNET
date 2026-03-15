@@ -1,8 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Numerics;
-using System.Reflection;
-using JuliaDotNet;
-using static JuliaDotNet.JuliaCalls;
+﻿using JuliaDotNet;
 
 try
 {
