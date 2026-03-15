@@ -35,4 +35,13 @@ public static class JuliaArrays {
         return new(ptr, (int) length);
     }
     
+    public static unsafe IntPtr WrapPtrToArray<T>(T* v, long nel, IntPtr? juliaArrayType = null) where T : unmanaged {
+        if (juliaArrayType == null) {
+            var elType = JLConvert.GetJuliaEqType(typeof(T));
+            if (elType == null)
+                throw new Exception("Unable to determine julia array type...");
+            juliaArrayType = JuliaCalls.jl_apply_array_type(elType.Value, 1);
+        }
+        return JuliaCalls.jl_ptr_to_array_1d(juliaArrayType.Value, (IntPtr) v, nel, 0);
+    }
 }

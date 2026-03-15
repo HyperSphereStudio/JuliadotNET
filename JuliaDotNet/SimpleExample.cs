@@ -12,8 +12,8 @@ public class SimpleExample
             
         fixed (Complex* v = x) {
             fixed (Complex* w = output) {
-                var ja = new JAny(Julia.WrapPtrToJulia(v, x.Length));
-                var ob = new JAny(Julia.WrapPtrToJulia(w, x.Length));
+                var ja = new JAny(JuliaArrays.WrapPtrToArray(v, x.Length));
+                var ob = new JAny(JuliaArrays.WrapPtrToArray(w, x.Length));
                 DoFFT(isInverse, ja, ob);
             }
         }
