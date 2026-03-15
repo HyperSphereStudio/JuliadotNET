@@ -1,0 +1,116 @@
+# =========================
+# JetBrains Rider / IntelliJ
+# =========================
+.idea/
+*.sln.iml
+out/
+
+# =========================
+# Build outputs
+# =========================
+bin/
+obj/
+Debug/
+Release/
+[Rr]eleases/
+x64/
+x86/
+
+# =========================
+# User-specific files
+# =========================
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# =========================
+# Rider / ReSharper
+# =========================
+_ReSharper*/
+*.ReSharper
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# =========================
+# NuGet
+# =========================
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+!libs/*.nupkg
+
+# =========================
+# .NET / .NET Core
+# =========================
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.dll
+*.exe
+*.pdb
+*.mdb
+*.runtimeconfig.json
+*.deps.json
+*.cache
+
+# =========================
+# Logs
+# =========================
+*.log
+[Ll]og/
+[Tt]est[Rr]esult*/
+TestResult.xml
+nunit-*.xml
+
+# =========================
+# Temporary / generated files
+# =========================
+*.tmp
+*.temp
+*.iobj
+*.ipdb
+*.opendb
+*.VC.db
+*.DS_Store
+*.swp
+*.bak
+
+# =========================
+# Test / Coverage
+# =========================
+BenchmarkDotNet.Artifacts/
+coverage*.json
+coverage*.xml
+*.coverage
+*.coveragexml
+_NCrunch_*
+nCrunchTemp_*
+
+# =========================
+# Others
+# =========================
+node_modules/
+sass-cache/
+publish/
+*.publish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+paket-files/
+fake/
+FakesAssemblies/
+OpenCover/
+history/
+localhistory/
