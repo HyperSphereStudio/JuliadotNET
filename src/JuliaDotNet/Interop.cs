@@ -1,9 +1,8 @@
 using System.Buffers;
-using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Loader;
 using System.Text;
 
 namespace JuliaDotNet;
@@ -150,61 +149,64 @@ public unsafe class Interop
         LessThanEqF = jl_eval_string("<=");
 
         if (!jlInterfaceIsLoaded) {
-            var bytes = GetResourceBytes(typeof(Interop).Namespace + ".JuliaInterface.jl");
+            var bytes = GetResourceBytes("JuliaDotNet.JuliaDotNet.jl");
             jl_eval_string(Encoding.UTF8.GetString(bytes));
             Julia.CheckExceptions();
-            jl_eval_string("using .JuliadotNet");   
+            jl_eval_string("using .JuliaDotNet");   
         }
         else {
-            jl_eval_string("using JuliadotNet"); 
+            jl_eval_string("using JuliaDotNet"); 
         }
         Julia.CheckExceptions();
         
-        GetExceptionF = jl_eval_string("JuliadotNet.get_backtrace_str");
-        
+        GetExceptionF = jl_eval_string("JuliaDotNet.get_backtrace_str");
+      
         FreeJuliaRoot = (delegate* unmanaged[Cdecl]<long, void>)
-            JLConvert.Unbox<IntPtr>(jl_eval_string("@cfunction(JuliadotNet.unroot_object_from_sharp, Cvoid, (Int, ))"));
+            JLConvert.Unbox<IntPtr>(jl_eval_string("@cfunction(JuliaDotNet.unroot_object_from_sharp, Cvoid, (Int, ))"));
         
         TypeOfF = (delegate* unmanaged[Cdecl]<IntPtr, IntPtr>)
             JLConvert.Unbox<IntPtr>(jl_eval_string("@cfunction(Base.typeof, Any, (Any, ))"));
         
-        SharpObjectT = jl_eval_string("JuliadotNet.SharpObject");
+        SharpObjectT = jl_eval_string("JuliaDotNet.SharpObject");
        
         CreateJuliaRoot = (delegate* unmanaged[Cdecl]<IntPtr, long>)
-            JLConvert.Unbox<IntPtr>(jl_eval_string("@cfunction(JuliadotNet.root_object_from_sharp, Int, (Any, ))"));
+            JLConvert.Unbox<IntPtr>(jl_eval_string("@cfunction(JuliaDotNet.root_object_from_sharp, Int, (Any, ))"));
    
-        CompileDelegateToJuliaF = jl_eval_string("JuliadotNet.compile_delegate");
+        CompileDelegateToJuliaF = jl_eval_string("JuliaDotNet.compile_delegate");
         
         GetArrayPointer = (delegate* unmanaged[Cdecl]<IntPtr, IntPtr, IntPtr>) 
             JLConvert.UnboxPtr(jl_eval_string("""
-                                              @cfunction(JuliadotNet.get_array_ptr_void, Ptr{Cvoid}, (Any, Ptr{Int}))
+                                              @cfunction(JuliaDotNet.get_array_ptr_void, Ptr{Cvoid}, (Any, Ptr{Int}))
                                               """));
+        
         IterateForSharp = (delegate* unmanaged[Cdecl]<IntPtr, IntPtr, IntPtr>) 
             JLConvert.UnboxPtr(jl_eval_string("""
-                                              @cfunction(JuliadotNet.iterate_for_sharp, Any, (Any, Ptr{Any}))
+                                              @cfunction(JuliaDotNet.iterate_for_sharp, Any, (Any, Ptr{Any}))
                                               """));
         
         CreateSharpObject = (delegate* unmanaged[Cdecl]<long, IntPtr>) 
             JLConvert.UnboxPtr(jl_eval_string("""
-                                              @cfunction(JuliadotNet.create_sharp_object, Any, (Int, ))
+                                              @cfunction(JuliaDotNet.create_sharp_object, Any, (Int, ))
                                               """));
         
         UnboxSharpObject = (delegate* unmanaged[Cdecl]<IntPtr, long>) 
             JLConvert.UnboxPtr(jl_eval_string("""
-                                              @cfunction(JuliadotNet.handle, Int, (Any, ))
+                                              @cfunction(JuliaDotNet.handle, Int, (Any, ))
                                               """));
-       
+    
         Julia.CheckExceptions();
     }
     
-    public static byte[] GetResourceBytes(string resourceName) {
-        using (Stream stream = typeof(Interop).Assembly.GetManifestResourceStream(resourceName)!) {
-            if (stream == null) throw new FileNotFoundException("Resource not found", resourceName);
-            using (MemoryStream ms = new MemoryStream()) {
-                stream.CopyTo(ms);
-                return ms.ToArray();
-            }
+    public static byte[] GetResourceBytes(string resourceName)
+    {
+        using Stream stream = typeof(Interop).Assembly.GetManifestResourceStream(resourceName)!;
+        if (stream == null) {
+            Console.WriteLine("Resources Found:" + string.Join(",", typeof(Interop).Assembly.GetManifestResourceNames()));
+            throw new FileNotFoundException("Resource not found", resourceName);
         }
+        using MemoryStream ms = new MemoryStream();
+        stream.CopyTo(ms);
+        return ms.ToArray();
     }
 }
 
@@ -229,12 +231,32 @@ public static class SharpInterop{
             return ObjectRoots[id];
         }
     }
-
-    private static IntPtr ConvertObjectToJulia(object? o, JulianArgFlags flags) {
+    
+    public static IntPtr ConvertObjectToJulia(object? o, JulianArgFlags flags) {
         if (flags.HasFlag(JulianArgFlags.TryConvertToJuliaNative)) {
             return JLConvert.BoxToJulia(o);
         }
         return JLConvert.BoxAsSharpObject(o);
+    }
+    
+    public static unsafe Delegate CreateDelegateFromJuliaObject(Type dtype, JAny x, long _pflags, long nPars, long returnFlags) {
+        JulianArgFlags[]? pFlags = null;
+        var paramFlags = (long*) _pflags;
+        if (paramFlags != null) {
+            pFlags = new JulianArgFlags[nPars];
+            for(var i = 0; i < nPars; i++)
+                pFlags[i] = (JulianArgFlags) paramFlags[i];
+        }
+        return Julia.CreateDelegateFromJuliaObject(dtype, x, pFlags, (JulianArgFlags) returnFlags);
+    }
+    
+    public static object ConvertObjectToSharp(IntPtr x, JulianArgFlags flags) {
+        if (flags.HasFlag(JulianArgFlags.TryConvertToSharpNative)) {
+            if (JLConvert.TryConvertJuliaToSharp(x, out var argv)) {
+                return argv;
+            } 
+        }
+        return new JAny(x);
     }
     
 
@@ -246,59 +268,67 @@ public static class SharpInterop{
             jl_error("Op must be Symbol!");
             return 0;
         }
-        
+     
         var tar = GetObjectFromHandle(targetID);
+    
         if (tar == null) {
             jl_error("Null Target");
             return 0;
         }
         
         if (op == "getproperty" && nargs == 1 && Symbols.TryGetStringFromSymbol(args[0].V, out var pname)) {
-            return JLConvert.BoxToJulia(_reflect.Get(tar, pname, isVoidRet));
+            return JLConvert.BoxToJulia(_reflect.Get(tar, pname!, isVoidRet));
         }
-
+        
         var argObjects = ArrayPool<object>.Shared.Rent((int) nargs);
         try {
             for (var i = 0; i < nargs; i++) {
                 var arg = args[i];
-                if (arg.Flags.HasFlag(JulianArgFlags.TryConvertToSharpNative)) {
-                    if (JLConvert.TryConvertJuliaToSharp(arg.V, out var argv)) {
-                        argObjects[i] = argv;
-                        continue;
-                    }
-                }
-                argObjects[i] = new JAny(arg.V);
-            }
-      
-            if (op == "getindex") {
-                return ConvertObjectToJulia(_reflect.GetIndex(tar, argObjects.AsSpan(0, (int)nargs), isVoidRet), returnFlags);
-            }
-
-            if (op == "setindex!") {
-                return ConvertObjectToJulia(_reflect.SetIndex(tar, argObjects[0], argObjects.AsSpan(1, (int)nargs - 1), isVoidRet), returnFlags);
+                argObjects[i] =  ConvertObjectToSharp(arg.V, arg.Flags);
             }
             
-            if (op == "invokeMember" && Symbols.TryGetStringFromSymbol(args[0].V, out var invokeMember)) {
-                return ConvertObjectToJulia(
-                    _reflect.Invoke(tar, invokeMember!, argObjects.AsSpan(1, (int) nargs - 1), isVoidRet), 
-                    returnFlags);
+            var ro = op switch {
+                "setproperty" when nargs == 2 && Symbols.TryGetStringFromSymbol(args[0].V, out pname) => _reflect.Set(tar, pname!, argObjects[1], true),
+                "getindex" => _reflect.GetIndex(tar, argObjects.AsSpan(0, (int)nargs), isVoidRet),
+                "setindex!" => _reflect.SetIndex(tar, argObjects[0], argObjects.AsSpan(1, (int)nargs - 1), isVoidRet),
+                "invokeMember" when Symbols.TryGetStringFromSymbol(args[0].V, out var invokeMember) => _reflect.Invoke(
+                    tar, invokeMember!, argObjects.AsSpan(1, (int)nargs - 1), isVoidRet),
+                "binary_op" when nargs == 3 &&
+                                 Symbols.TryGetStringFromSymbol(args[0].V, out var bop) &&
+                                 Enum.TryParse<ExpressionType>(bop!, out var bexp) =>
+                    _reflect.BinaryOperation(bexp, argObjects[1], argObjects[2]),
+                "unary_op" when nargs == 2 && Symbols.TryGetStringFromSymbol(args[0].V, out var bop) &&
+                                Enum.TryParse<ExpressionType>(bop!, out var uexp) => _reflect.UnaryOperation(argObjects[1], uexp),
+                "invoke" => _reflect.Invoke(tar, "Invoke", argObjects.AsSpan(0, (int)nargs), isVoidRet),
+                _ => throw new Exception("Unknown operation:" + op)
+            };
+            return ConvertObjectToJulia(ro, returnFlags);
+            
+        }catch (Exception e) {
+            var sb = new StringBuilder("Exception Occured During .NET Reflection:");
+            sb.Append(op);
+            sb.Append('(');
+            for (var i = 0; i < nargs; i++) {
+                if (i != 0) sb.Append(", ");
+                sb.Append(argObjects[i]);
+                sb.Append("::");
+                sb.Append(argObjects[i]?.GetType().Name ?? "null");
+                if (argObjects[i] is JAny ja) {
+                    sb.Append('[');
+                    sb.Append(ja.TypeOfName);
+                    sb.Append(']');
+                }
             }
-
-            if (op == "invoke") {
-                return ConvertObjectToJulia(_reflect.Invoke(tar, "Invoke", argObjects.AsSpan(0, (int)nargs), isVoidRet), returnFlags);
-            }
+            sb.AppendLine(")");
+            
+            var ex = new Exception(sb.ToString(), e);
+            jl_throw(JAny.BoxSharpObject(ex).Handle);
         }
         finally {
             ArrayPool<object?>.Shared.Return(argObjects);
         }
         
-        jl_error("Unable to decode operation:" + op);
         return 0;
-    }
-
-    public static void LoadSharpFromJulia() {
-        Interop.Init(true);
-        Init();
     }
     
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
@@ -317,19 +347,20 @@ public static class SharpInterop{
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
     private static IntPtr GetType(long id) => JLConvert.BoxAsSharpObject(GetObjectFromHandle(id)!.GetType());
     
-    
     internal static unsafe void Init() { 
-        dynamic jdn = Julia.Eval("JuliadotNet");
+        dynamic jdn = Julia.Eval("JuliaDotNet");
         dynamic vars = new JAny(JuliaArrays.AllocArray(JuliaArrays.CreateArrayType(Interop.AnyT, 1), 6));
+        Julia.Eval("");
         
         delegate* unmanaged[Cdecl]<long, void> unroot = &unroot_object_from_julia;
+        
         vars[1] = JAny.Box((IntPtr) unroot);
         
         delegate* unmanaged[Cdecl]<long, IntPtr, JulianArg*, long, JulianArgFlags, IntPtr> netreflect = &NetReflect;
         vars[2] = JAny.Box((IntPtr) netreflect);
         
         vars[3] = JAny.BoxSharpObject(typeof(NetNameResolver));
-
+        
         delegate* unmanaged[Cdecl]<long, IntPtr> nettostring = &ToString;
         vars[4] = JAny.Box((IntPtr) nettostring);
         
@@ -338,9 +369,9 @@ public static class SharpInterop{
         
         delegate* unmanaged[Cdecl]<long, IntPtr> nettype = &GetType;
         vars[6] = JAny.Box((IntPtr) nettype);
-        
+   
         jdn.init_sharp_fcns(vars);
-       
+        
         Julia.CheckExceptions();
     }
     

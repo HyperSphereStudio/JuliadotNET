@@ -18,12 +18,13 @@ public class NetNameResolver
         return assembly;
     }
     
-    public Assembly UsingAssembly(string path) => UsingAssembly(_context.LoadFromAssemblyName(AssemblyName.GetAssemblyName(path)));
-
-    public object Using(string path)
-    {
+    public Assembly UsingAssemblyByName(string name) => UsingAssembly(_context.LoadFromAssemblyName(new AssemblyName(name)));
+    public Assembly UsingAssemblyByPath(string path) => UsingAssembly(_context.LoadFromAssemblyPath(path));
+    
+    public object Using(string path) {
         if (_loadedTypes.TryGetValue(path, out var ty))
             return ty;
+        
         if (!_loadedNames.Contains(path)) {
             ty = FindType(path);
             if (ty != null) {

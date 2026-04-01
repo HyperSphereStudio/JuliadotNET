@@ -145,7 +145,23 @@ public class NetReflectionFactory
             Binder.UnaryOperation(CSharpBinderFlags.None, bop, typeof(object), ai));
     }
     
-    public static VariadicFcn MakeGetIndex(int nargs, bool isVoid) {
+    public static VariadicFcn MakeGetIndex(int nargs, bool isVoid, bool isStatic) {
+        if (isStatic) {
+            return (args, nargs) => {
+                var tt = (Type) args[0];
+
+                if (args[1] is int or long) {
+                    var array_dim = args[1] is int i ? i : (int) (long) args[1];
+                    return tt.MakeArrayType(array_dim);
+                }
+                
+                var typeArgs = new Type[nargs - 1];
+                for(var i = 0; i < typeArgs.Length; i++)
+                    typeArgs[i] = (Type) args[i + 1];
+                return tt.MakeGenericType(typeArgs);
+            };
+        }
+        
         return CreateSite("getindex", false, isVoid, nargs, (_, _, isvoid, _, ai) =>
             Binder.GetIndex(isvoid ? CSharpBinderFlags.ResultDiscarded : 0, typeof(object), ai));
     }
@@ -251,7 +267,7 @@ public class NetReflection
         }
     }
 
-    public void Set(object target, string name, object? value, bool isVoid) {
+    public object Set(object target, string name, object? value, bool isVoid) {
         var targetType = target is Type t ? t : target.GetType();
         var site = GetOrAdd(new(name, CallOp.SetMember, 2, targetType, target is Type, isVoid), k => 
             NetReflectionFactory.MakeSet(k.Static, k.Void, k.TargetType, k.Name));
@@ -266,6 +282,8 @@ public class NetReflection
         {
             ArrayPool<object>.Shared.Return(args);
         }
+
+        return value;
     }
 
     public object? Invoke(object target, string name, Span<object> args, bool isVoid) {
@@ -273,7 +291,6 @@ public class NetReflection
         var targetType = target as Type ?? target.GetType();
         var site = GetOrAdd(new(name, CallOp.Invoke, argCount, targetType, target is Type, isVoid), 
             k => NetReflectionFactory.MakeInvoke(k.Static, k.Nargs, k.Void, k.Name, k.TargetType));
-        
         var fargs = ArrayPool<object>.Shared.Rent(1 + args.Length);
         try {
             fargs[0] = target;
@@ -321,9 +338,9 @@ public class NetReflection
     public object? GetIndex(object target, Span<object> idxs, bool isVoid)
     {
         var argCount = idxs.Length + 1;
-        var targetType = target is Type t ? t : target.GetType();
+        var targetType = target as Type ?? target.GetType();
         var site = GetOrAdd(new("getindex", CallOp.GetIndex, argCount, targetType, target is Type, isVoid), 
-            k => NetReflectionFactory.MakeGetIndex(k.Nargs, isVoid));
+            k => NetReflectionFactory.MakeGetIndex(k.Nargs, k.Void, k.Static));
         var fargs = ArrayPool<object>.Shared.Rent(1 + idxs.Length);
         try {
             fargs[0] = target;

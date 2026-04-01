@@ -198,6 +198,9 @@ public class JuliaCalls
 
     [DllImport("libjulia", CallingConvention = CallingConvention.Cdecl)]
     public static extern void jl_error(string str);
+    
+    [DllImport("libjulia", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void jl_throw(IntPtr ex); 
 
     [DllImport("libjulia", CallingConvention = CallingConvention.Cdecl)]
     public static extern IntPtr jl_get_libdir();

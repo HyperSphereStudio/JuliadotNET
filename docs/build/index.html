@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · JuliaDotNet.jl</title><meta name="title" content="Home · JuliaDotNet.jl"/><meta property="og:title" content="Home · JuliaDotNet.jl"/><meta property="twitter:title" content="Home · JuliaDotNet.jl"/><meta name="description" content="Documentation for JuliaDotNet.jl."/><meta property="og:description" content="Documentation for JuliaDotNet.jl."/><meta property="twitter:description" content="Documentation for JuliaDotNet.jl."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>JuliaDotNet.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Key-Features"><span>Key Features</span></a></li><li><a class="tocitem" href="#System-Requirements"><span>System Requirements</span></a></li><li><a class="tocitem" href="#Initialization"><span>Initialization</span></a></li><li><a class="tocitem" href="#Julia-To-Sharp-Interop"><span>Julia To Sharp Interop</span></a></li><li><a class="tocitem" href="#Sharp-to-Julia-Interop"><span>Sharp to Julia Interop</span></a></li><li><a class="tocitem" href="#Shutdown"><span>Shutdown</span></a></li><li><a class="tocitem" href="#Upcoming-Roadmap-(TODO)"><span>🛠 Upcoming Roadmap (TODO)</span></a></li><li><a class="tocitem" href="#Contributing"><span>🤝 Contributing</span></a></li></ul></li><li><a class="tocitem" href="api/">API Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/HyperSphereStudio/JuliadotNET" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/HyperSphereStudio/JuliadotNET/blob/main/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><p><strong>JuliaDotNet</strong> is a bidirectional bridge between .NET (C#) and the Julia programming language. It enables developers to leverage Julia&#39;s mathematical power within C# applications and interact with .NET objects directly from Julia scripts.</p><h2 id="Key-Features"><a class="docs-heading-anchor" href="#Key-Features">Key Features</a><a id="Key-Features-1"></a><a class="docs-heading-anchor-permalink" href="#Key-Features" title="Permalink"></a></h2><ul><li><strong>Dynamic Julia Interop</strong>: Use the <code>JAny</code> type to interact with Julia objects as if they were native C# dynamic objects.</li><li><strong>Automatic Memory Management</strong>: Handles Julia&#39;s Garbage Collector (GC) by automatically rooting objects via <code>JAny</code> to prevent premature collection.</li><li><strong>Bidirectional Object Mapping</strong>:<ul><li><strong>Boxing</strong>: Pass .NET primitives, strings, and custom objects into Julia.</li><li><strong>Unboxing</strong>: Convert Julia results back into native .NET types (int, float, string, etc.).</li></ul></li></ul><h2 id="System-Requirements"><a class="docs-heading-anchor" href="#System-Requirements">System Requirements</a><a id="System-Requirements-1"></a><a class="docs-heading-anchor-permalink" href="#System-Requirements" title="Permalink"></a></h2><ul><li><strong>.NET 8.0+</strong></li><li><strong>Julia 1.11+</strong></li></ul><h2 id="Initialization"><a class="docs-heading-anchor" href="#Initialization">Initialization</a><a id="Initialization-1"></a><a class="docs-heading-anchor-permalink" href="#Initialization" title="Permalink"></a></h2><pre><code class="language-cs hljs">
+using JuliaDotNet;
+
+// Optional configuration
+var options = new JuliaOptions {
+    ThreadCount = 4,
+    Optimize = 3
+};
+
+// Initializes the Julia engine
+Julia.Init(options);
+</code></pre><h2 id="Julia-To-Sharp-Interop"><a class="docs-heading-anchor" href="#Julia-To-Sharp-Interop">Julia To Sharp Interop</a><a id="Julia-To-Sharp-Interop-1"></a><a class="docs-heading-anchor-permalink" href="#Julia-To-Sharp-Interop" title="Permalink"></a></h2><p>The JuliaDotNet library bridges the gap between the static world of .NET and the highly dynamic nature of Julia. By implementing the DynamicObject pattern in C#, the library essentially exposes the Julia runtime as a first-class dynamic environment within the .NET ecosystem.</p><p>The core of this interaction is the JAny struct. In C#, it acts as a thin wrapper around a Julia pointer (jl<em>value</em>t*), but when cast to dynamic, it utilizes the DLR (Dynamic Language Runtime) to map C# member access directly to Julia&#39;s internal metadata and function dispatch.</p><p>Internally this object is just a IntPtr that is wrapped with a .NET object. The library will internally pin this reference based on the lifetime of the JAny object.</p><h3 id="Type-Resolution-and-Instantiation"><a class="docs-heading-anchor" href="#Type-Resolution-and-Instantiation">Type Resolution &amp; Instantiation</a><a id="Type-Resolution-and-Instantiation-1"></a><a class="docs-heading-anchor-permalink" href="#Type-Resolution-and-Instantiation" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Resolve .NET types using the T macro
+List = T&quot;System.Collections.Generic.List`1&quot;
+Int32 = T&quot;System.Int32&quot;
+
+# Instantiate generic collections
+my_list = List[Int32]()
+invokememvoid(my_list, :Add, 5)</code></pre><h3 id="Delegate-Bridging"><a class="docs-heading-anchor" href="#Delegate-Bridging">Delegate Bridging</a><a id="Delegate-Bridging-1"></a><a class="docs-heading-anchor-permalink" href="#Delegate-Bridging" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Create a .NET Predicate&lt;int&gt; from a Julia lambda
+pred = delegate(T&quot;System.Predicate`1&quot;[Int32], x -&gt; x == 5)
+
+# Use the C# method with the Julia delegate
+invokemem(my_list, :RemoveAll, pred)</code></pre><h3 id="Operator-Mapping"><a class="docs-heading-anchor" href="#Operator-Mapping">Operator Mapping</a><a id="Operator-Mapping-1"></a><a class="docs-heading-anchor-permalink" href="#Operator-Mapping" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Maps directly to C# operator overloads
+println(a + b)
+println(a &lt; b)</code></pre><h3 id="Example"><a class="docs-heading-anchor" href="#Example">Example</a><a id="Example-1"></a><a class="docs-heading-anchor-permalink" href="#Example" title="Permalink"></a></h3><pre><code class="language-csharp hljs">
+dynamic Rocket = Julia.Eval(@&quot;
+    mutable struct Rocket
+        name::String
+        fuel::Float64
+        is_active::Bool
+        Rocket() = new()
+    end
+
+    function launch!(r::Rocket)
+        r.fuel -= 10.5
+        println(&quot;&quot;Rocket $(r.name) launched! Fuel remaining: $(r.fuel)&quot;&quot;)
+        return r.fuel
+    end
+    
+    Rocket
+&quot;);
+
+    dynamic launchf = Julia.Eval(&quot;launch!&quot;);
+    dynamic rocket = Rocket(); 
+    
+    rocket.name = &quot;My Rocket!&quot;;
+    rocket.fuel = 32;
+    launchf(rocket);      
+    Console.WriteLine(rocket);      //Rocket(&quot;My Rocket!&quot;, 21.5, false)
+</code></pre><p>The library provides two ways to interact with the Julia runtime: a low-level P/Invoke layer and a high-level dynamic wrapper.</p><p>Direct libjulia Calls The JuliaCalls class exposes the raw C API of Julia. While this gives you absolute control, it requires manual memory management and constant handling of IntPtr (representing the underlying jl<em>value</em>t*).</p><pre><code class="language-csharp hljs">
+using static JuliaDotNet.JuliaCalls;
+
+// Raw P/Invoke: Fast but dangerous
+IntPtr rawResult = jl_eval_string(&quot;1 + 1&quot;);
+// You must ensure this pointer is rooted if you intend to keep it!</code></pre><h3 id="Arrays"><a class="docs-heading-anchor" href="#Arrays">Arrays</a><a id="Arrays-1"></a><a class="docs-heading-anchor-permalink" href="#Arrays" title="Permalink"></a></h3><p>When working with performance-critical operations like FFTs, Linear Algebra, or Signal Processing, you can use JuliaArrays.WrapPtrToArray to let Julia operate directly on C# fixed memory buffers.</p><pre><code class="language-csharp hljs">
+using System.Numerics;
+using JuliaDotNet;
+
+public class FastFourierExample
+{
+    // We store the Julia function as a dynamic object
+    public static dynamic DoFFT { get; private set; }
+    
+    public static unsafe void ComputeFFT(Complex[] x, Complex[] output, bool isInverse) {
+        if(x.Length != output.Length)
+            throw new Exception(&quot;Invalid Data Length!&quot;);
+            
+        // 1. Pin the C# memory so the GC doesn&#39;t move it
+        fixed (Complex* v = x) {
+            fixed (Complex* w = output) {
+                // 2. Wrap the pointers into Julia Arrays (Zero-Copy)
+                using var ja = new JAny(JuliaArrays.WrapPtrToArray(v, x.Length));
+                using var ob = new JAny(JuliaArrays.WrapPtrToArray(w, x.Length));
+                
+                // 3. Call the Julia function directly
+                DoFFT(isInverse, ja, ob);
+            }
+        }
+    }    
+
+    public static void Init() {
+        // Define the heavy-lifting logic in Julia
+        DoFFT = Julia.Eval(
+            &quot;&quot;&quot;
+            using FFTW
+            
+            function do_fft(isInverse, x, o)
+                # Use Julia&#39;s FFTW plans to operate on the C# memory buffers
+                flags = FFTW.ESTIMATE | FFTW.UNALIGNED
+                p = isInverse ? plan_ifft(x; flags=flags) : plan_fft(x; flags=flags)
+                FFTW.mul!(o, p, x)
+            end 
+            &quot;&quot;&quot;);
+    }
+
+    public static void Run() {
+        Julia.Init(new JuliaOptions());
+        Init();
+
+        Complex[] values = new Complex[1024];
+        Complex[] outputs = new Complex[1024];
+        
+        // Initialize data...
+        for (int i = 0; i &lt; values.Length; i++) 
+            values[i] = new Complex(i, 0);
+
+        // Compute FFT using Julia&#39;s FFTW
+        ComputeFFT(values, outputs, false);
+        
+        Console.WriteLine(&quot;FFT computed successfully using shared memory!&quot;);
+    }
+}</code></pre><h2 id="Sharp-to-Julia-Interop"><a class="docs-heading-anchor" href="#Sharp-to-Julia-Interop">Sharp to Julia Interop</a><a id="Sharp-to-Julia-Interop-1"></a><a class="docs-heading-anchor-permalink" href="#Sharp-to-Julia-Interop" title="Permalink"></a></h2><p>The library exposes the .NET DLR to Julia. you can pass native C# objects into the Julia runtime. Julia can then treat these objects as first-class entities: accessing fields, calling methods.</p><pre><code class="language-csharp hljs">
+public class Test {
+    public static int A { get; set; } = 3;
+    public int a { get; set; } = 2;
+
+    public int b;
+    public static int B;
+    
+    public static int Add(int x) =&gt; x + 2;
+    public static long Add(long x) =&gt; x + 4;
+    
+    public int Add2(int a, int b) =&gt; a + 3 + b;
+    public long Add2(long a, long b) =&gt; a + 5 + b;
+
+    public void CallVoidMethod() { a = 51;}
+
+    public static I TestGenericMethod&lt;I&gt;(I v) where I: IFloatingPoint&lt;I&gt; {
+        return v + I.One;
+    }
+    
+    public static void CallStaticVoidMethod() {
+        B = 71;
+    }
+
+    public long this[long j] {
+        get =&gt; b;
+        set =&gt; b = (int) value;
+    }
+	
+	
+    public override string ToString() =&gt; $&quot;Test(a={a}, b={b})&quot;;
+	
+	public static Test operator +(Test a) =&gt; new Test() { b = +a.b };
+    public static Test operator -(Test a) =&gt; new Test() { b = -a.b };
+    
+    public static bool operator &lt;(Test a, Test b) =&gt; a.b &lt; b.b;
+    public static bool operator &gt;(Test a, Test b) =&gt;  a.b &gt; b.b;
+    public static bool operator &lt;=(Test a, Test b) =&gt; a.b &lt;= b.b;
+    public static bool operator &gt;=(Test a, Test b) =&gt;  a.b &gt;= b.b;
+    public static Test operator +(Test a, Test b) =&gt; new Test() { b = a.b + b.b };
+    public static Test operator -(Test a, Test b) =&gt; new Test() { b = a.b - b.b };
+    public static bool operator ==(Test a, Test b) =&gt; true;
+    public static bool operator !=(Test a, Test b) =&gt; a.b != b.b;
+    public override string ToString() =&gt; $&quot;Test(a={a}, b={b})&quot;;
+}
+
+Julia.Eval(&quot;&quot;&quot;
+	# Import the C# &quot;Test&quot; class into Julia
+    Test = T&quot;Test&quot;
+                   
+    # Instantiate the C# class from INSIDE Julia
+    a = Test()
+                   
+    println(a)          # Calls the C# .ToString() override
+                   
+    # Use Julia indexing syntax to call the C# indexer
+    a[3] = 20           
+                   
+    println(a)          					# Confirm the value changed
+                   
+    res1 = invokemem(Test, :Add, Int32(10)) # Calls int overload -&gt; 12
+    res2 = invokemem(Test, :Add, Int64(10)) # Calls long overload -&gt; 14
+    println(invokemem(Test, :TestGenericMethod, 43.2))  #Call generic method -&gt; 44.2               
+				   
+    res3 = invokemem(a, :Add2, 7, 9)    
+
+	println(&quot;a+b=&quot;, a + b)               #Overload the c# operator  
+    println(&quot;a-b=&quot;, a - b)            
+    println(&quot;a&lt;b=&quot;, a &lt; b)           
+    println(&quot;a==b=&quot;, a == b)              
+    println(-a)        
+                   
+    invokememvoid(a, :CallVoidMethod)       #Use this to invoke void functions     
+    println(a)
+                   
+    T&quot;System.Collections.Generic&quot;        	#Add to namespace
+    T&quot;System&quot;
+                   
+	list = T&quot;List`1&quot;
+    int = T&quot;Int64&quot;
+                   
+    myList = list[int]()					#Create generic type with type[type...]
+    invokememvoid(myList, :Add, 5)
+                   
+    myArrayType = int[1];
+                   
+    usingasm(; asm_name=&quot;System.Console&quot;)
+    console = T&quot;Console&quot;
+    invokememvoid(console, :WriteLine, &quot;Hello From Julia Console&quot;)
+    pred = delegate(T&quot;System.Predicate`1&quot;[int], x -&gt; x == 5)      #Wrap function to delegate
+                   
+    println(collect(myList));          # [5, 6]
+    invokemem(myList, :RemoveAll, pred)
+    println(collect(myList));          # [6]   &quot;&quot;&quot;)</code></pre><h2 id="Shutdown"><a class="docs-heading-anchor" href="#Shutdown">Shutdown</a><a id="Shutdown-1"></a><a class="docs-heading-anchor-permalink" href="#Shutdown" title="Permalink"></a></h2><p>To Release All Objects Held by Julia and Run Finalizers</p><pre><code class="language-cs hljs">Julia.Exit(0);</code></pre><h2 id="Upcoming-Roadmap-(TODO)"><a class="docs-heading-anchor" href="#Upcoming-Roadmap-(TODO)">🛠 Upcoming Roadmap (TODO)</a><a id="Upcoming-Roadmap-(TODO)-1"></a><a class="docs-heading-anchor-permalink" href="#Upcoming-Roadmap-(TODO)" title="Permalink"></a></h2><h3 id="1.-Reverse-Initialization-(Julia-.NET)"><a class="docs-heading-anchor" href="#1.-Reverse-Initialization-(Julia-.NET)">1. Reverse Initialization (Julia ➔ .NET)</a><a id="1.-Reverse-Initialization-(Julia-.NET)-1"></a><a class="docs-heading-anchor-permalink" href="#1.-Reverse-Initialization-(Julia-.NET)" title="Permalink"></a></h3><ul><li>[ ] <strong>Standalone Julia Entry</strong>: Currently, the bridge is primary-managed by C#. Working on a mechanism to launch the .NET runtime directly from a Julia session (<code>using JuliaDotNet</code>) without an existing C# host process.</li></ul><h3 id="2.-Deep-DLR-Integration"><a class="docs-heading-anchor" href="#2.-Deep-DLR-Integration">2. Deep DLR Integration</a><a id="2.-Deep-DLR-Integration-1"></a><a class="docs-heading-anchor-permalink" href="#2.-Deep-DLR-Integration" title="Permalink"></a></h3><ul><li>[ ] <strong>Julia Native Operators</strong>: Add the rest of the .NET operators (only a small subset are implemented atm)</li></ul><h3 id="3.-Documentation-and-Tooling"><a class="docs-heading-anchor" href="#3.-Documentation-and-Tooling">3. Documentation &amp; Tooling</a><a id="3.-Documentation-and-Tooling-1"></a><a class="docs-heading-anchor-permalink" href="#3.-Documentation-and-Tooling" title="Permalink"></a></h3><ul><li>[ ] <strong>Advanced Examples</strong>: Add tutorials for integration</li></ul><h3 id="4.-Robustness-and-Testing"><a class="docs-heading-anchor" href="#4.-Robustness-and-Testing">4. Robustness &amp; Testing</a><a id="4.-Robustness-and-Testing-1"></a><a class="docs-heading-anchor-permalink" href="#4.-Robustness-and-Testing" title="Permalink"></a></h3><ul><li>[ ] <strong>Unit Test Expansion</strong>: Increase coverage for edge cases in .NET Reflection, especially regarding Generics and Ref/Out parameters.</li><li>[ ] <strong>Stress Testing</strong>: Longevity tests for cross-runtime Garbage Collection under heavy object churn.</li></ul><hr/><h2 id="Contributing"><a class="docs-heading-anchor" href="#Contributing">🤝 Contributing</a><a id="Contributing-1"></a><a class="docs-heading-anchor-permalink" href="#Contributing" title="Permalink"></a></h2><p>Contributions are welcome! If you are interested in extending the DLR capabilities or improving the memory management layer etc., please feel free to open an issue or a Pull Request.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="api/">API Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Wednesday 1 April 2026 15:38">Wednesday 1 April 2026</span>. Using Julia version 1.11.9.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

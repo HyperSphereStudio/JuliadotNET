@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -13,6 +13,7 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <OutputPath>../../artifacts</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,11 +22,16 @@
 
     <ItemGroup>
       <None Remove="JuliaInterface.jl" />
-      <EmbeddedResource Include="JuliaInterface.jl" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\README.md">
+      <EmbeddedResource Include="..\JuliaDotNet.jl">
+        <Link>JuliaDotNet.jl</Link>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\README.md">
         <Link>README.md</Link>
       </Content>
     </ItemGroup>

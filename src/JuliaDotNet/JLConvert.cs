@@ -142,8 +142,7 @@ public static class JLConvert
         result = null;
         return ty != null && TryConvert(handle, ty, out result);
     }
-
-   
+    
     public static bool TryConvert(IntPtr handle, Type t, out object? result) {
         if (handle == Interop.NothingA.Handle) {
             result = null;
@@ -189,9 +188,9 @@ public static class JLConvert
                 result = UnboxString(ConvertTo(handle, Interop.StringT));
                 return true;
             }
-
+            
             if (t == typeof(object) && jl_isa(handle, Interop.SharpObjectT) != 0) {
-                result = UnboxSharpObject(Unbox<IntPtr>(handle));
+                result = UnboxSharpObject(handle);
                 return true;
             }
         }
