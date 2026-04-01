@@ -115,7 +115,7 @@ OpenCover/
 history/
 localhistory/
 
-
+!artificats/nethost.dll
 !artifacts/
 !artifacts/net9.0/
 !artificats/**
