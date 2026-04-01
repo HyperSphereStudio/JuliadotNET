@@ -56,7 +56,7 @@ _ReSharper*/
 # =========================
 project.lock.json
 project.fragment.lock.json
-artifacts/
+
 *.dll
 *.exe
 *.pdb
@@ -114,3 +114,9 @@ FakesAssemblies/
 OpenCover/
 history/
 localhistory/
+
+
+!artifacts/
+!artifacts/net9.0/
+!artificats/**
+!artifacts/net9.0/**

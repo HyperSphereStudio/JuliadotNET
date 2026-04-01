@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "JuliaDotNet/1.0.0": {
+        "dependencies": {
+          "CppSharp.Runtime": "1.1.84.17100"
+        },
+        "runtime": {
+          "JuliaDotNet.dll": {}
+        }
+      },
+      "CppSharp.Runtime/1.1.84.17100": {
+        "runtime": {
+          "lib/netstandard2.1/CppSharp.Runtime.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "JuliaDotNet/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "CppSharp.Runtime/1.1.84.17100": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-g0CUioOq7NGxBNL313+eBOcVFkt6wPd56JLw7nKOuP0dUsj7Yx+y3/SJuR1S7YBCaHZ6nHtkQBpAu2Ze5QxjLA==",
+      "path": "cppsharp.runtime/1.1.84.17100",
+      "hashPath": "cppsharp.runtime.1.1.84.17100.nupkg.sha512"
+    }
+  }
+}
